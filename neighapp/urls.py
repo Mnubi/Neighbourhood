@@ -7,5 +7,6 @@ urlpatterns=[
     path('post', views.post, name="post"),
     path('update/<id>', views.update_profile, name='update_profile'),
     path('neighbourhood/', views.neighbourhood, name='neighbourhood'),
+    path("contacts/", views.contacts, name="contacts"),
     
 ]

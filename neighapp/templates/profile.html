@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<section class="profile container">
+<div class="profile container">
     <div class=" mt-5">
         <div class="row">
             <div class="col-md-3">
@@ -36,7 +36,7 @@
     </div>
     
    </section>
-   <div class="details">
+   <div class="details col-md-6">
     <div class="first">
       <h3>{{user.username}}</h3>
       {% if request.user is user %}  
@@ -48,15 +48,17 @@
       {% endif %}
 
     </div>
-    <div>
-        <a href=""  class="btn btn-outline-dark bg-dark text-white rounded-pill">
-         Create Neighborhood
-        </a>
-    </div>
-    <div>
-        <a href=""  class="btn btn-outline-dark bg-dark text-white rounded-pill">
-         Create post
-        </a>
+    <div class="col-md-6">
+        <div>
+            <a href=""  class="btn btn-outline-dark bg-primary text-white rounded-pill">
+            Create Neighborhood
+            </a>
+        </div>
+        <div>
+            <a href=""  class="btn btn-outline-dark bg-primary text-white rounded-pill">
+            Create post
+            </a>
+        </div>
     </div>
 </div>
 

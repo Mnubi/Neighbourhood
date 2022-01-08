@@ -1,9 +1,13 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+
 <section class="blog-section" id="posts">
     <div class="container mt-5">
 
         <div class="row mt-4">
 
-            <h2 class="text-center mb-5 headings">Contact Information Within Your Neighborhood: <br>({{neighbourhood}})
+            <h2 class="text-center mb-5 headings">These are some of the importants contact Information Within Your Neighborhood: <br>({{neighbourhood}})
             </h2>
 
             
@@ -18,9 +22,8 @@
                        <br>
                        <a class="card-link">Phone: <span class="badge rounded-pill bg-secondary text-white">{{ biz.phone }}</span> </a>
                         <br>
-                       <!-- <a class="card-link">Neighbourhood: <span class="badge rounded-pill bg-warning text-dark">{{ biz.neighbourhood }}</span> </a> -->
                     </div>
-                  </div>
+                </div>
             </div>
 
             {% empty %}
@@ -35,5 +38,4 @@
         </div>
     </div>
 </section>
-<!-- latest posts section  -->
-{% endblock %}
+{%endblock%}
