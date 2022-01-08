@@ -19,9 +19,17 @@ class BusinessForm(forms.ModelForm):
         model=Business
         fields=['name','email','description','neighbourhood']
 
+class NeighbourhoodForm(forms.ModelForm):
+    class Meta:
+        model = Neighbourhood
+        exclude = ('admin',)
+
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields=['title','image','content','neighbourhood']
 
-  
+class NewBusinessForm(forms.ModelForm):
+    class Meta:
+        model = Business
+        exclude = ('user',)
