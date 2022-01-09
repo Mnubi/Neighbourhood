@@ -13,8 +13,8 @@
 
     <h1 class="text-center"><strong>My hood</strong></h1>
     <hr>
-    <p>This is a neighborhood platform designed on civic engagement. My-Hood is dedicated to “improving communication between residents of multi-unit buildings as well as with property owners and business managers.”
-        Users share real-time updates with one another and use the site to share and swap.
+    <p class="text-center">This is a neighborhood platform designed on civic engagement. <br> My-Hood is dedicated to “improving communication between residents <br> as well as with property owners and business managers.”
+        <br> Users share real-time updates with one another and use the site to share and swap.
     </p>
 
 </div>
@@ -24,15 +24,14 @@
 
         {% for neighbourhood in neighbourhoods %}
         <div class="col-lg-4">
-            <div
-                style="background-color: rgb(233, 232, 211);box-sizing: border-box; margin-top:2%;box-shadow: 0vh 0vh 1vh gainsboro;">
+            <div style="background-color: rgb(233, 232, 211);box-sizing: border-box; margin-top:2%;box-shadow: 0vh 0vh 1vh gainsboro;">
 
                 <div class="about">
 
                     <div class="row" style="padding-top: 1%">
                         <div class="col-md-12">
                             <h4 style="font-weight:600;">Name: <a style="color:rgb(53, 53, 245);"
-                                    href="{% url 'view_neighbourhood' id=neighbourhood.id %}" class="text-right"
+                                    href="{% url 'neighbourhood' %}" class="text-right"
                                     style="text-decoration: none;">{{neighbourhood.neighbourhood_name}}
                                 </a></h4>
 
@@ -44,7 +43,7 @@
                         </div>
                     </div>
                     <div class="">
-                        <a href="{% url 'view_neighbourhood' id=neighbourhood.id %}">
+                        <a href="{% url 'neighbourhood' %}">
                             <img src="{{neighbourhood.neighbourhood_photo.url}}" class="img-responsive"
                                 alt="{{image.neighbourhood_name}}" style="width:100%;width:100%">
                         </a>
@@ -53,18 +52,17 @@
                 </div>
 
                 <div style="padding-top:1%;padding-bottom:1%">
-                    {%if request.user.profile.neighbourhood == neighbourhood %}
+                    {% if request.user.profile.neighbourhood == neighbourhood %}
 
                     <a class="btn btn-danger" href="{%url 'leave_neighbourhood' neighbourhood.id%}">Leave
                         Neighbourhood</a>
 
-                    {%elif not request.user.profile.neighbourhood%}
+                    {% elif not request.user.profile.neighbourhood%}
 
 
-                    <a class="btn btn-primary" href="{%url 'join_neighbourhood' neighbourhood.id%}">Join
-                        Neighbourhood</a>
+                    <a class="btn btn-primary" href="{%url 'join_neighbourhood' neighbourhood.id%}">Join Neighbourhood</a>
 
-                    {%endif%}
+                    {% endif %}
                 </div>
 
             </div>
@@ -75,6 +73,7 @@
 
     </div>
 </div>
+
 
 
 
