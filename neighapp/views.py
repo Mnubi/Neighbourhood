@@ -1,7 +1,10 @@
 from os import name
-from django.shortcuts import render, redirect
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.views import PasswordChangeDoneView
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import *
+from django.contrib import messages
 from django.http  import HttpResponse
 from django.contrib.auth.models import User
 from .form import BusinessForm, PostForm, ProfileForm, UpdateProfileForm, NeighbourhoodForm
@@ -26,7 +29,7 @@ def index(request):
         neighbourhood = Neighbourhood.objects.all()   
         businesses = Business.objects.filter(user_id=current_user.id)
         contacts = Contact.objects.filter(user_id=current_user.id)
-        return render(request, "profile.html", {"danger": "Update Profile by selecting Your Neighbourhood name to continue 😥!!", "locations": locations, "neighbourhood": neighbourhood, "businesses": businesses, "contacts": contacts, "posts": posts})
+        return render(request, "index.html", {"locations": locations, "neighbourhoods": neighbourhood, "businesses": businesses, "contacts": contacts, "posts": posts})
     else:
         neighbourhood = profile.neighbourhood
         # get all posts in the neighbourhood of the user ordered by date
@@ -44,7 +47,7 @@ def profile(request):
     businesses = Business.objects.filter(user_id=current_user.id)
     contacts = Contact.objects.filter(user_id=current_user.id)
 
-    return render(request, 'profile.html', {'profile': profile, 'posts': posts, 'locations': locations, 'neighbourhood': neighbourhood, 'categories': category, 'businesses': businesses, 'contacts': contacts})
+    return render(request, 'profile.html', {'profile': profile, 'posts': posts, 'locations': locations, 'neighbourhood': neighbourhood, 'businesses': businesses, 'contacts': contacts})
 
 @login_required(login_url='/accounts/login/')
 def update_profile(request,id):
@@ -93,7 +96,7 @@ def post(request):
 
     else:
         form = PostForm()
-    return render(request, 'post.html', {"form": form})
+    return render(request, 'create_post.html', {"form": form})
 
 @login_required(login_url="/accounts/login/")
 def contacts(request):
@@ -118,3 +121,53 @@ def contacts(request):
         contacts = Contact.objects.filter(
             neighbourhood=profile.neighbourhood).order_by("-created_at")
         return render(request, "contacts.html", {"contacts": contacts, "neighbourhood": profile.neighbourhood})
+
+@login_required(login_url='/accounts/login/')
+def join_neighbourhood(request, id):
+    neighbourhood = get_object_or_404(Neighbourhood, id=id)
+    request.user.profile.neighbourhood = neighbourhood
+    request.user.profile.save()
+    return redirect('index')
+
+def leave_neighbourhood(request, id):
+    neighbourhood = get_object_or_404(Neighbourhood, id=id)
+    request.user.profile.neighbourhood = None
+    request.user.profile.save()
+    return redirect('index')
+
+@login_required(login_url="/accounts/login/")
+# alerts page
+def alerts(request):
+    current_user = request.user
+    # get current user neighbourhood
+    profile = Profile.objects.filter(user_id=current_user.id).first()
+    # check if user has neighbourhood
+    if profile is None:
+        profile = Profile.objects.filter(
+            user_id=current_user.id).first()  # get profile
+        post = Post.objects.filter(user_id=current_user.id)
+        # get all locations
+        locations = Location.objects.all()
+        neighbourhood = Neighbourhood.objects.all()
+        businesses = Business.objects.filter(user_id=current_user.id)
+        contacts = Contact.objects.filter(user_id=current_user.id)
+        # redirect to profile with error message
+        return render(request, "alert.html", {"locations": locations, "neighbourhood": neighbourhood, "businesses": businesses, "contacts": contacts, "posts": post})
+
+@login_required(login_url='/accounts/login/')
+def business(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = BusinessForm(request.POST, request.FILES)
+        if form.is_valid():
+            business = form.save(commit=False)
+            business.user = current_user
+
+            business.save()
+
+        return redirect('index')
+
+    else:
+        form = BusinessForm()
+    return render(request, 'business.html', {"form": form})
+

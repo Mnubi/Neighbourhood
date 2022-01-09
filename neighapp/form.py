@@ -33,3 +33,8 @@ class NewBusinessForm(forms.ModelForm):
     class Meta:
         model = Business
         exclude = ('user',)
+
+# class PasswordChangeForm(forms.ModelForm):
+#     class Meta:
+#         model = Post
+#         fields= ['old_password', 'new_password', 'Confirm_new_password']
