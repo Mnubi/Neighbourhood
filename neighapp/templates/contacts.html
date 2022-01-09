@@ -7,10 +7,46 @@
 
         <div class="row mt-4">
 
-            <h2 class="text-center mb-5 headings">These are some of the importants contact Information Within Your Neighborhood: <br>({{neighbourhood}})
+            <h2 class="text-center mb-5 headings">These are some of the importants contact Information Within Your Neighborhood: <br>
             </h2>
 
-            
+            <div class="card" >
+                <div class="card-body">
+                    <h5 class="card-title text-capitalize"><strong>Langata Police</strong></h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Created By: <span class="badge rounded-pill bg-info text-white">Kenya Police</span></h6>
+                    <!-- <p class="card-text">{{ biz.description }}</p> -->
+                    <a href="malto:{{ biz.email }}" class="card-link">Email: <span class="text-bold text-primary">kenyapolice@gmail.com</span> </a>
+                   <br>
+                   <a class="card-link">Phone: <span class="badge rounded-pill bg-secondary text-white">+254713 940 537</span> </a>
+                    <br>
+                </div>
+            </div>
+
+            <div class="card" >
+                <div class="card-body">
+                    <h5 class="card-title text-capitalize"><strong>Ray of Hope Clinic</strong></h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Created By: <span class="badge rounded-pill bg-info text-white">Dr. Benard Otieno</span></h6>
+                    <!-- <p class="card-text">{{ biz.description }}</p> -->
+                    <a href="malto:{{ biz.email }}" class="card-link">Email: <span class="text-bold text-primary">rayclinic@gmail.com</span> </a>
+                   <br>
+                   <a class="card-link">Phone: <span class="badge rounded-pill bg-secondary text-white">+254721 603 180</span> </a>
+                    <br>
+                </div>
+            </div>
+
+            <div class="card" >
+                <div class="card-body">
+                    <h5 class="card-title text-capitalize"><strong>Nyumba 10 Init</strong></h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Created By: <span class="badge rounded-pill bg-info text-white">Mr. Samuel Jackson</span></h6>
+                    <!-- <p class="card-text">{{ biz.description }}</p> -->
+                    <a href="malto:{{ biz.email }}" class="card-link">Email: <span class="text-bold text-primary">nyumba10@gmail.com</span> </a>
+                   <br>
+                   <a class="card-link">Phone: <span class="badge rounded-pill bg-secondary text-white">+254724 780 324</span> </a>
+                    <br>
+                </div>
+            </div>
+        </div>
+        </div>
             {% for biz in contacts %}
             <div class="col-md-12 col-lg-3">
                 <div class="card" >
