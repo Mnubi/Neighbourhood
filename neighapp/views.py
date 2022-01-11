@@ -1,6 +1,7 @@
 from os import name
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.views import PasswordChangeDoneView
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import *
@@ -16,7 +17,7 @@ def welcome(request):
     return HttpResponse('Welcome to the Moringa Tribune')
 
 # created view for homepage
-@login_required(login_url='/accounts/login/')
+# @login_required(login_url='/accounts/login/')
 def index(request):
     current_user = request.user
     profile = Profile.objects.filter(user_id=current_user.id).first()
@@ -31,9 +32,9 @@ def index(request):
         contacts = Contact.objects.filter(user_id=current_user.id)
         return render(request, "index.html", {"locations": locations, "neighbourhoods": neighbourhood, "businesses": businesses, "contacts": contacts, "posts": posts})
     else:
-        neighbourhood = profile.neighbourhood
+        neighbourhood = Neighbourhood.objects.all()
         # get all posts in the neighbourhood of the user ordered by date
-        posts = Post.objects.filter(neighbourhood=neighbourhood).order_by("-created_at")
+        posts = Post.objects.filter(neighbourhood=neighbourhood).order_by("-timestamp")
         return render(request, 'index.html', {'posts': posts})
 
 @login_required(login_url='/accounts/login/')
@@ -51,6 +52,7 @@ def profile(request):
 
 @login_required(login_url='/accounts/login/')
 def update_profile(request,id):
+    Profile.objects.get_or_create(user=request.user)
     user = User.objects.get(id=id)
     profile = Profile.objects.get(user_id = user)
     form = UpdateProfileForm(instance=profile)
@@ -139,7 +141,6 @@ def leave_neighbourhood(request, id):
 # alerts page
 def alerts(request):
     current_user = request.user
-    # get current user neighbourhood
     profile = Profile.objects.filter(user_id=current_user.id).first()
     # check if user has neighbourhood
     if profile is None:
@@ -153,6 +154,8 @@ def alerts(request):
         contacts = Contact.objects.filter(user_id=current_user.id)
         # redirect to profile with error message
         return render(request, "alert.html", {"locations": locations, "neighbourhood": neighbourhood, "businesses": businesses, "contacts": contacts, "posts": post})
+    else:
+        return redirect('/alert')
 
 @login_required(login_url='/accounts/login/')
 def business(request):
@@ -170,4 +173,43 @@ def business(request):
     else:
         form = BusinessForm()
     return render(request, 'business.html', {"form": form})
+
+@login_required(login_url="/accounts/login/")
+def create_business(request):
+    current_user = request.user
+    if request.method == "POST":
+        
+        form=BusinessForm(request.POST,request.FILES)
+
+        if form.is_valid():
+            business=form.save(commit=False)
+            business.user=current_user
+            business.hood= neighbourhood
+            business.save()
+        return HttpResponseRedirect('/businesses')
+    else:
+        form=BusinessForm()
+    return render (request,'business_form.html', {'form': form, 'profile': profile})
+
+@login_required(login_url="/accounts/login/")
+def businesses(request):
+    current_user = request.user
+    businesses = Business.objects.all().order_by('-id')
+    
+    profile = Profile.objects.filter(user_id=current_user.id).first()
+
+    if profile is None:
+        profile = Profile.objects.filter(
+            user_id=current_user.id).first()
+        
+        locations = Location.objects.all()
+        neighborhood = Neighbourhood.objects.all()
+        
+        businesses = Business.objects.all().order_by('-id')
+        
+        return render(request, "profile.html", {"danger": "Update Profile", "locations": locations, "neighborhood": neighborhood, "businesses": businesses})
+    else:
+        neighborhood = profile.neighbourhood
+        businesses = Business.objects.all().order_by('-id')
+        return render(request, "business.html", {"businesses": businesses}) 
 
