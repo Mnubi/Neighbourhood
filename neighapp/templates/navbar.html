@@ -20,7 +20,7 @@
                 <li class="nav-item"><a class="nav-link" href="{% url 'contacts' %}">Contacts</a></li>
             </ul>
 
-            <form class="me-auto search-form " target="_self" action="#">
+            <form class="me-auto search-form " target="_self" action="{% url 'search' %}">
                 <div class="d-flex align-items-center"><label class="form-label d-flex mb-0" for="search-field">
                         <i class="fa fa-search "></i>
                     </label><input class="form-control search-field" type="search" id="search-field" name="search_term">
@@ -35,7 +35,7 @@
                 <div class="dropdown-menu">
                   <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
                   <a class="dropdown-item" href="/admin">Admin</a>
-                  <a class="dropdown-item" href="/accounts/password/change">Change Password</a>
+                  <a class="dropdown-item" href="{% url 'create_business' %}">Post business</a>
                   <a class="dropdown-item" href="#"></a>
                 <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="/logout">Logout</a>
