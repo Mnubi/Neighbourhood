@@ -48,7 +48,7 @@ def profile(request):
     businesses = Business.objects.filter(user_id=current_user.id)
     contacts = Contact.objects.filter(user_id=current_user.id)
 
-    return render(request, 'profile.html', {'profile': profile, 'posts': posts, 'locations': locations, 'neighbourhood': neighbourhood, 'businesses': businesses, 'contacts': contacts})
+    return render(request, 'profile.html', {'profile': profile, 'posts': posts, 'locations': locations, 'neighbourhoods': neighbourhood, 'businesses': businesses, 'contacts': contacts})
 
 @login_required(login_url='/accounts/login/')
 def update_profile(request,id):
@@ -142,18 +142,12 @@ def leave_neighbourhood(request, id):
 def alerts(request):
     current_user = request.user
     profile = Profile.objects.filter(user_id=current_user.id).first()
-    # check if user has neighbourhood
-    if profile is None:
-        profile = Profile.objects.filter(
-            user_id=current_user.id).first()  # get profile
-        post = Post.objects.filter(user_id=current_user.id)
-        # get all locations
-        locations = Location.objects.all()
-        neighbourhood = Neighbourhood.objects.all()
-        businesses = Business.objects.filter(user_id=current_user.id)
-        contacts = Contact.objects.filter(user_id=current_user.id)
-        # redirect to profile with error message
-        return render(request, "alert.html", {"locations": locations, "neighbourhood": neighbourhood, "businesses": businesses, "contacts": contacts, "posts": post})
+    locations = Location.objects.all()
+    neighbourhood = Neighbourhood.objects.all()
+    businesses = Business.objects.filter(user_id=current_user.id)
+    contacts = Contact.objects.filter(user_id=current_user.id)
+    
+    return render(request, "alert.html", {"locations": locations, "neighbourhood": neighbourhood, "businesses": businesses, "contacts": contacts, "posts": post})
     
 
 @login_required(login_url='/accounts/login/')
