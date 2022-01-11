@@ -1,68 +1,66 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <div class="profile container">
-        <div>
-            <div class=" mt-5">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="card">
-                            {% if profile.profile_pic %}
-                            <img src="{{profile.profile_pic.url}}" alt="" style="border-radius: 70%;">
-                            {%else%}
-                            <img src="https://www.kindpng.com/picc/m/78-785975_icon-profile-bio-avatar-person-symbol-chat-icon.png"
-                                class="card-img-top" alt="My profile picture">
+<section class="profile container">
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <div class="card">
+                    {% if profile.profile_pic %}
+                    <img src="{{profile.profile_pic.url}}" alt="" style="border-radius: 70%; width: 50%;">
+                    {%else%}
+                    <img src="https://img.favpng.com/25/13/19/samsung-galaxy-a8-a8-user-login-telephone-avatar-png-favpng-dqKEPfX7hPbc6SMVUCteANKwj.jpg"
+                        class="card-img-top" alt="My profile picture">
+                    {% endif %}
+                    <div class="card-body">
+                        <h4 class="card-text">
+                            {{ user.first_name }} {{ user.last_name }}
+                        </h4>
+                        <p>{{ user.username }}</p>
+                        
+                        <p>
+                            {% if profile.bio %}
+                            <small>{{ profile.bio }}</small>
+                            {% else %}
+                            <span class="text-danger">know about me</span>
                             {% endif %}
-                            <div class="card-body text-center">
-                                <h4 class="card-text">
-                                    {{ user.first_name }} {{ user.last_name }}
-                                </h4>
-                                <p>{{ user.username }}</p>
-
-                                <p>
-                                    {% if profile.bio %}
-                                    <small>{{ profile.bio }}</small>
-                                    {% else %}
-                                    <span class="text-danger">No about me</span>
-                                    {% endif %}
-                                </p>
-                                <h6>Joined on: <span class="badge rounded-pill bg-secondary text-white">
-                                        {{ user.date_joined }} </span></h6>
+                        </p>
+                        <h6>Joined on: <span class="badge rounded-pill bg-secondary text-white">
+                                {{ user.date_joined }} </span></h6>
                                 <p>{{ profile.contact }}</p>
-
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
-
-            <div class="details ">
-                <div class="first">
-                    <h3>{{user.username}}</h3>
-                    {% if request.user is user %}
+            <div class="col-md-6">
+                <div class="details">
+                    <div class="first">
+                      <h3>{{user.username}}</h3>
+                      {% if request.user is user %}  
+                      <div>
+                        <a href="{% url 'update_profile' user.id %}" class="btn btn-outline-dark bg-primary text-white rounded-pill">
+                          Edit Profile
+                        </a>
+                      </div>
+                      <br>
+                      {% endif %}
+                
+                    </div>
                     <div>
-                        <a href="{% url 'update_profile' user.id %}" class="btn btn-outline-warning mb-4">
-                            Update Profile
+                        <a href="{% url 'neighbourhood' %}" class="btn btn-outline-dark bg-primary text-white rounded-pill">
+                            Create Neighborhood
                         </a>
                     </div>
-                    {% endif %}
-
+                    <br>
+                    <div>
+                        <a href="{%url 'create_business'  %}"  class="btn btn-outline-dark bg-primary text-white rounded-pill">
+                         Create Business
+                        </a>
+                    </div>
+                    <br>
+                    <div>
+                        <a href="{% url 'post' %}" class="btn btn-outline-dark bg-primary text-white rounded-pill">
+                            Create post
+                        </a>
+                    </div>
                 </div>
-            </div>
-
-        </div>
-       
-    </div>
-    <div class="col-md-6">
-        <div>
-            <a href="{% url 'neighbourhood' %}"  class="btn btn-outline-dark bg-primary text-white rounded-pill">
-            Create Neighborhood
-            </a>
-        </div>
-        <div>
-            <a href="{% url 'post' %}"  class="btn btn-outline-dark bg-primary text-white rounded-pill">
-            Create post
-            </a>
-        </div>
-    </div>
-    {% endblock %}
+{% endblock %}
