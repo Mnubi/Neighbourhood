@@ -1,0 +1,34 @@
+{%extends 'base.html'%}
+{% load static %}
+{% load bootstrap4 %}
+{% block styles %}
+{{ block.super}}
+<link rel="stylesheet" href="{% static 'css/in.css' %}">
+{% endblock %}
+
+{% block content %}
+<style>
+    body{
+    font-family: 'Lato', global_font_string;
+    font-weight: 500;
+    color: whitesmoke;
+    }
+    
+</style>
+<br><br>
+<div class="container">
+    <div class="box">
+        <div class="text-center">
+        <div class="title">
+            <h3>Create Business</h3>
+        </div>
+        <hr>
+        </div>
+        <form action="{%url 'create_business'%}" method="post" enctype="multipart/form-data">
+            {%csrf_token%}    
+            {% bootstrap_form form%}
+            <input type="submit" class="btn btn-dark " value="Create Business">
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -154,8 +154,7 @@ def alerts(request):
         contacts = Contact.objects.filter(user_id=current_user.id)
         # redirect to profile with error message
         return render(request, "alert.html", {"locations": locations, "neighbourhood": neighbourhood, "businesses": businesses, "contacts": contacts, "posts": post})
-    else:
-        return redirect('/alert')
+    
 
 @login_required(login_url='/accounts/login/')
 def business(request):
@@ -213,3 +212,14 @@ def businesses(request):
         businesses = Business.objects.all().order_by('-id')
         return render(request, "business.html", {"businesses": businesses}) 
 
+@login_required(login_url="/accounts/login/")
+def search(request):
+    if 'search_term' in request.GET and request.GET["search_term"]:
+        search_term = request.GET.get("search_term")
+        searched_hood = Neighbourhood.objects.filter(name__icontains=search_term)
+        message = f"Search For: {search_term}"
+
+        return render(request, "search.html", {"message": message, "hood": searched_hood})
+    else:
+        message = "You haven't searched for any term"
+        return render(request, "search.html", {"message": message})

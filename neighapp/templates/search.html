@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container hood">
+    <div class="row">
+
+        {% for hoods in hood %}
+        <div class="col-md-6">
+            <img src="{{hoods.hood_image.url}}" alt="" class="image">
+
+        </div>
+            <div class="col-md-6 mt-5">
+            <a href="{%url 'lone_hood' hoods.name %}">
+                <p class="name">{{hoods.name}}</p>
+            </a>
+
+            <p> {{ hoods.location }}</p>
+            <p>{{ hoods.occupants_count }}</p>
+            <p>{{ hoods.content }}</p>
+
+            {% if request.user.profile.neighborhood == hoods %}
+            <a href="{% url 'leave_hood' hoods.id %}" class="btn btn-outline-danger btn-sm">Leave at will</a>
+
+            <a href="{%url 'lone_hood' hoods.name %}" class="btn btn-outline-success btn-sm"
+                style="float: right">Explore
+                {{hoods.name}}
+            </a>
+            {% elif not request.user.profile.neighborhood %}
+            <a href="{% url 'join_hood' hoods.id %}" class="btn btn-info btn-sm mb-4">Join Hood</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+
+</div>
+
+
+
+{%endblock%}
