@@ -11,13 +11,12 @@
 
    
 </style>
-<!-- blogs -->
 <section class="blog-section" id="posts">
     <div class="container mt-5">
 
         <div class="row mt-4">
 
-            <h2 class="text-center mb-5 headings"><em><strong>Timely Posts and Alerts</strong></em> </i>
+            <h2 class="text-center mb-5 headings">Latest Alerts <i class="fa fa-exclamation-triangle text-danger"></i>
             </h2>
 
 
@@ -57,49 +56,11 @@
                                         </p>
                                     </div>
                                 </div>
-                                <div class="display-on-hover">
-                                    <p class="badge rounded-pill bg-danger text-white text-capitalize">
-                                        {{ post.category}}
-                                    </p>
-                                </div>
+                                
                             </div>
                         </a>
                     </div>
                 </div>
             </div>
-
-            <!-- modal -->
-            <div class="modal fade" id="postModal{{ post.id }}" tabindex="-1" role="dialog"
-                aria-labelledby="profileModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        
-                        <div class="modal-body">
-                            <p>
-                                {{ post.content }}
-                            </p>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            {% empty %}
-            <div class="col-md-12 col-lg-12">
-                <div class="card mb-4 post-card">
-                    <div class="card-body text-center">
-                        <h4 class="fade-item mb-2 text-danger">No Posts Alerts within Your Area!!!</h4>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-
-
-
-
-
-
-        </div>
-    </div>
-</section>
-<!-- latest posts section  -->
+            {% endfor %} 
 {% endblock %}

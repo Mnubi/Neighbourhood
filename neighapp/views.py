@@ -18,6 +18,20 @@ def welcome(request):
 
 # created view for homepage
 # @login_required(login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
+def profile(request):
+    current_user = request.user
+    profile = Profile.objects.filter(
+        user_id=current_user.id).first()  # get profile
+    posts = Post.objects.filter(user_id=current_user.id)
+    locations = Location.objects.all()
+    neighbourhood = Neighbourhood.objects.all()
+    businesses = Business.objects.filter(user_id=current_user.id)
+    contacts = Contact.objects.filter(user_id=current_user.id)
+
+    return render(request, 'profile.html', {'profile': profile, 'posts': posts, 'locations': locations, 'neighbourhoods': neighbourhood, 'businesses': businesses, 'contacts': contacts})
+
+
 def index(request):
     current_user = request.user
     profile = Profile.objects.filter(user_id=current_user.id).first()
@@ -37,18 +51,6 @@ def index(request):
         posts = Post.objects.filter(neighbourhood=neighbourhood).order_by("-timestamp")
         return render(request, 'index.html', {'posts': posts})
 
-@login_required(login_url='/accounts/login/')
-def profile(request):
-    current_user = request.user
-    profile = Profile.objects.filter(
-        user_id=current_user.id).first()  # get profile
-    posts = Post.objects.filter(user_id=current_user.id)
-    locations = Location.objects.all()
-    neighbourhood = Neighbourhood.objects.all()
-    businesses = Business.objects.filter(user_id=current_user.id)
-    contacts = Contact.objects.filter(user_id=current_user.id)
-
-    return render(request, 'profile.html', {'profile': profile, 'posts': posts, 'locations': locations, 'neighbourhoods': neighbourhood, 'businesses': businesses, 'contacts': contacts})
 
 @login_required(login_url='/accounts/login/')
 def update_profile(request,id):
@@ -83,22 +85,41 @@ def neighbourhood(request):
         form = NeighbourhoodForm()
     return render(request, 'neighbourhood.html', {"form": form})
 
-@login_required(login_url='/accounts/login/')
-def post(request):
+
+def posts(request):
+    current_user = request.user
+    profile = Profile.objects.filter(user_id=current_user.id).first()
+    posts = Post.objects.filter(user_id=current_user.id)
+    if profile is None:
+        profile = Profile.objects.filter(
+            user_id=current_user.id).first() 
+        posts = Post.objects.filter(user_id=current_user.id)
+        
+        locations = Location.objects.all()
+        neighbourhood = Neighbourhood.objects.all()
+        
+        businesses = Business.objects.filter(user_id=current_user.id)
+        
+        return render(request, "profile.html", {"danger": "Update Profile ", "locations": locations, "neighbourhood": neighbourhood,  "businesses": businesses,"posts": posts})
+    else:
+        neighbourhood = profile.neighbourhood
+        posts = Post.objects.filter(user_id=current_user.id)
+        return render(request, "alert.html", {"posts": posts})
+
+login_required(login_url="/accounts/login/")
+def create_post(request):
     current_user = request.user
     if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)
+        form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            post.user = current_user
-
+            post.neighbourhood = neighbourhood
+            post.user=current_user
             post.save()
-
-        return redirect('index')
-
+            return redirect('/posts')
     else:
         form = PostForm()
-    return render(request, 'create_post.html', {"form": form})
+    return render(request, 'create_post.html', {'form': form})
 
 @login_required(login_url="/accounts/login/")
 def contacts(request):
@@ -124,7 +145,7 @@ def contacts(request):
             neighbourhood=profile.neighbourhood).order_by("-created_at")
         return render(request, "contacts.html", {"contacts": contacts, "neighbourhood": profile.neighbourhood})
 
-@login_required(login_url='/accounts/login/')
+
 def join_neighbourhood(request, id):
     neighbourhood = get_object_or_404(Neighbourhood, id=id)
     request.user.profile.neighbourhood = neighbourhood
@@ -147,7 +168,7 @@ def alerts(request):
     businesses = Business.objects.filter(user_id=current_user.id)
     contacts = Contact.objects.filter(user_id=current_user.id)
     
-    return render(request, "alert.html", {"locations": locations, "neighbourhood": neighbourhood, "businesses": businesses, "contacts": contacts, "posts": post})
+    return render(request, "alert.html", {"locations": locations, "neighbourhood": neighbourhood, "businesses": businesses, "contacts": contacts, "posts": posts})
     
 
 @login_required(login_url='/accounts/login/')

@@ -119,7 +119,7 @@ class Contact(models.Model):
         return self.name
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     email = models.EmailField(max_length=100, blank=True, null=True)
     neighbourhood = models.ForeignKey(Neighbourhood, on_delete=models.CASCADE, blank=True, null=True)

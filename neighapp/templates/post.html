@@ -2,41 +2,6 @@
 {% load bootstrap4 %}
 {% block content %}
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-  .card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  text-align: center;
-}
 
-.title {
-  color: grey;
-  font-size: 18px;
-}
-
-
-button:hover, a:hover {
-  opacity: 0.7;
-}
-</style>
-  <div class="container">
-    <div class="row">
-        
-      {% for post in posts %}
-      <div class="col-md-4">
-
-        <div class="card">
-          <img src="{{ post.image.url }}" alt="post" style="width:100%,">
-          <h4>{{post.title}}</h4>
-          <p class="title">{{post.category}}</p>
-          <p>{{post.neighborhood}}</p>
-          <p>Posted on :<strong>{{ post.created_at|date }}</strong> by <strong>{{post.user}}</strong></p>
-          
-        </div>
-      </div>
-      {%endfor%}
-
-    </div>
-  </div>
   
 {% endblock %}
